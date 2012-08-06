@@ -30,12 +30,13 @@ background-color:#EAF2D3;
 }
 </style>
 
+<script src="js/mainStockCheck.js"></script>
+
 
 <script src="js/googleAnalytics.js" type="text/javascript"></script>
 
 </head>
 <body>
-
 
 <?php
 
@@ -45,36 +46,31 @@ background-color:#EAF2D3;
 
 require_once('Common/Layouts.php');
 require_once('Common/Common.php');
+require_once('MainStockCheck/StockCheckFunctions.php');
 require_once('MainStockCheck/DisplaysFunctions.php');
-
-//Maybe im wrong, seems to be working without it, will leave this here incase it needs to be re-enabled
-//It would appear argos does not like people using their pictures! Faking a user agent seems to be the only way of getting it to show up
-//ini_set('user_agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.9) Gecko/20071025 Firefox/2.0.0.9');
-
 
 //$checkNI = $_GET["checkNI"];
 $productId = $_GET["productId"];
+$productId = validateProductId($productId);
 
-if ($productId != "")
-{
-	//User has passed a product id, redirect them to the stock check page.
-	$redirectUrl = "StockCheck.php?productId=". $productId;
-	header( 'Location: '.$redirectUrl ) ;
-}
-
+$infoFileName = "data.csv";
 
 displayHeader();
 
-displayStockCheckForm("");
-echo "Please enter a product ID";
-echo "<br />";
+displayStockCheckForm($productId);
 
+if ($productId == "")
+{
+	echo "Please enter a product ID";
+	echo "<br />";
+}
+else
+{
+	displayItemInfo($productId);
 	
+	displayStockTableIreland($productId);
+}
+
 displayFooter();
 
-	
-	
-
 ?>
-</body>
-</html>
