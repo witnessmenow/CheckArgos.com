@@ -4,45 +4,71 @@ function displayItemInfo($productId)
 {
 	$infoFileName = "data.csv";
 
-	$productpage = file_get_contents("http://www.argos.ie/webapp/wcs/stores/servlet/ArgosAddByPartNumber?partNum_1=".$productId."&searchBean=Search+Terms+%5B".$productId."%5D+Search+Scope+%5B0%5D&langId=111&partNumber=".$productId."&storeId=10152");
+	$productPage = getProductHtmlCode($productId);
 	
-	$pos = strpos($productpage, "Sorry, we are unable to find the catalogue number(s) highlighted in your list.");
-	if ($pos !== false)
+	if (!doesProductExist($productPage))
 	{
-			//item does not exist!
-			echo "No item found matching product ID\n";
-			echo "<br />";
-			
-			require_once("footer.php");
-			echo'</center>';
-			exit;
+		//item does not exist!
+		echo "No item found matching product ID\n";
+		echo "<br />";
+		
+		return;
 	}
 	
 	$infoFile = fopen($infoFileName,"a+");
 	fputcsv ($infoFile , array($productId, time()), ',');
 	fclose ($infoFile);
 	
-	
-	
-	$productUrl = "http://www.argos.ie/static/Product/partNumber/".$productId.".htm";
-	$productPage = file_get_contents("$productUrl");
 	$productPageTitle = get_page_title($productPage);
-	$productTitle = explode ("at Argos.ie", $productPageTitle);
+	$productTitle = getProductName($productPageTitle);
 	$productPrice = get_product_price($productPage);
-	$productImage = "http://www.argos.ie".get_product_image($productPage);
+	$productImage = get_product_image($productPage);
 	echo '	<table width="800">
 				<tr>
 					<td align="center" width="375">
-						<a href="'.$productUrl.'">'.$productTitle[0].'at Argos.ie - &euro;'.$productPrice.'</a>
+						<a href="'.$productUrl.'">Buy '.$productTitle.'at Argos.ie - &euro;'.$productPrice.'</a>
 					</td>
 					<td align="center">
-						<img src="'.$productImage.'" alt="'.$productTitle[0].'" />
+						<img src="'.$productImage.'" alt="'.$productTitle.'" />
 					</td>
 				</tr>
 			</table>';
 			
 	echo "<br /><br />";
 	
+}
+
+function getProductHtmlCode($productId)
+{
+	$productUrl = getProductUrl($productId);
+	return file_get_contents("$productUrl");
+}
+
+function getProductUrl($productId)
+{
+	$productUrl = "http://www.argos.ie/static/Product/partNumber/".$productId.".htm";
+	return $productUrl;
+}
+
+function doesProductExist($productPage)
+{
+	$pos = strpos($productPage, "Sorry, we are unable to find the catalogue number(s) highlighted in your list.");
+	if ($pos !== false)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+	
+}
+
+function getProductName($productPageTitle)
+{
+	$tempArray = explode ("at Argos.ie", $productPageTitle);
+	$productName = $tempArray[0];
+	return str_replace("Buy ", "", $productName);
 }
 
 function displayNIItemInfo($productId)
@@ -83,7 +109,7 @@ function get_product_image($data)
 {
 	// Get Image
 	preg_match ('/id="mainimage" src="(.*?)"/', $data, $match);
-	return $match[1];
+	return "http://www.argos.ie".$match[1];
 }
 
 ?>
