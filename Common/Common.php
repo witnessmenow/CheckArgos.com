@@ -45,7 +45,6 @@ function getIrishStores()
 					"Arklow (Extra)" => 4101,
 					"Ashbourne Retail Park" => 943,
 					"Athlone" => 262,
-					"Blanchardstown Shopping Centre" => 398,
 					"Blanchardstown West End" => 669,
 					"Carlow (Extra)" => 4130,
 					"Castlebar" => 807,
