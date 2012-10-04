@@ -3,11 +3,11 @@
 // -------------------
 // --- PHP Imports ---
 // -------------------
-//require_once('../Common/Common.php');
+require_once('Common/Common.php');
 
 function displayStockCheckForm($productId)
 {
-	$actionUrl = "StockCheck.php";
+	$actionUrl = "StockCheckPage.php";
 
 	echo '<font face="Arial" size="6">Stock Checker:</font>';
 	echo "<br />";

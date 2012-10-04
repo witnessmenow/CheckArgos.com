@@ -68,7 +68,7 @@ function updateStock(productId, storeId, rowCount)
 	if (xmlreqs[pos].xmlhttp) 
 	{
 		xmlreqs[pos].freed = 0;
-		xmlreqs[pos].xmlhttp.open("GET",'stockCheck.php?NI=false&checkProduct=true&productId='+productId+'&storeId='+storeId,true);
+		xmlreqs[pos].xmlhttp.open("GET",'StockCheckBackground.php?NI=false&checkProduct=true&productId='+productId+'&storeId='+storeId,true);
 		xmlreqs[pos].xmlhttp.onreadystatechange = function()
 		{
 			if (typeof(xmlhttpChange) != 'undefined') 

@@ -34,7 +34,7 @@ function updateStock(productId, storeId)
 	if (xmlreqs[pos].xmlhttp) 
 	{
 		xmlreqs[pos].freed = 0;
-		xmlreqs[pos].xmlhttp.open("GET",'BackgroundTasks/stockCheck.php?NI=false&productId='+productId+'&storeId='+storeId,true);
+		xmlreqs[pos].xmlhttp.open("GET",'StockCheckBackground.php?NI=false&productId='+productId+'&storeId='+storeId,true);
 		xmlreqs[pos].xmlhttp.onreadystatechange = function()
 		{
 			if (typeof(xmlhttpChange) != 'undefined') 
@@ -64,7 +64,7 @@ function updateStockNI(productId, storeId)
 	if (xmlreqs[pos].xmlhttp) 
 	{
 		xmlreqs[pos].freed = 0;
-		xmlreqs[pos].xmlhttp.open("GET",'stockCheck.php?NI=true&productId='+productId+'&storeId='+storeId,true);
+		xmlreqs[pos].xmlhttp.open("GET",'StockCheckBackground.php?NI=true&productId='+productId+'&storeId='+storeId,true);
 		xmlreqs[pos].xmlhttp.onreadystatechange = function()
 		{
 			if (typeof(xmlhttpChange) != 'undefined') 

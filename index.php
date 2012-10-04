@@ -45,7 +45,7 @@ background-color:#EAF2D3;
 
 require_once('Common/Layouts.php');
 require_once('Common/Common.php');
-require_once('MainStockCheck/DisplaysFunctions.php');
+require_once('StockCheckDisplaysFunctions.php');
 
 //Maybe im wrong, seems to be working without it, will leave this here incase it needs to be re-enabled
 //It would appear argos does not like people using their pictures! Faking a user agent seems to be the only way of getting it to show up
@@ -58,7 +58,7 @@ $productId = $_GET["productId"];
 if ($productId != "")
 {
 	//User has passed a product id, redirect them to the stock check page.
-	$redirectUrl = "StockCheck.php?productId=". $productId;
+	$redirectUrl = "StockCheckPage.php?productId=". $productId;
 	header( 'Location: '.$redirectUrl ) ;
 }
 

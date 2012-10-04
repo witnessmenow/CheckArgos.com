@@ -46,8 +46,8 @@ background-color:#EAF2D3;
 
 require_once('Common/Layouts.php');
 require_once('Common/Common.php');
-require_once('MainStockCheck/StockCheckFunctions.php');
-require_once('MainStockCheck/DisplaysFunctions.php');
+require_once('StockCheckFunctions.php');
+require_once('StockCheckDisplaysFunctions.php');
 
 //$checkNI = $_GET["checkNI"];
 $productId = $_GET["productId"];
