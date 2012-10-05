@@ -35,6 +35,10 @@ if ($functionCall == "info")
 
 	return;
 }
+else if ($functionCall == "getStores")
+{
+	loadIrishStores();
+}
 
 
 function productInfoJson(	$productId,

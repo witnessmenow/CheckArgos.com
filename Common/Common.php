@@ -87,6 +87,32 @@ function getIrishStores()
 	return $stores;
 }
 
+function loadIrishStores()
+{
+	$storePageUrl = "http://www.argos.ie/webapp/wcs/stores/servlet/ArgosStoreLocatorDB?includeName=StoreLocator&langId=111&storeId=10152"; 
+	$storeRegex = '/class="storeTitle" id="STORE(\d{3,4})">\s*<span>\s*([\D^]*)/';
+	
+	$storePageHTML = file_get_contents("$storePageUrl");
+	//echo $storePageHTML;
+	
+	//preg_match_all ('/class="storeTitle" id="STORE([0-9]{3,4})/', $storePageHTML, $idArray);
+	preg_match_all ('/<span>\s*([\D^]*)\s*([0-9]{3,4})\s*<\/span>/', $storePageHTML, $match);
+	
+	$storeArray = array();
+	//print_r ($match);
+	for ($i = 0; $i< count($match[1]); $i++)
+	{
+		$storeName = $match[1][$i];
+		$storeId = $match[2][$i];
+		//Todo find Extra stores
+		
+		array_push($storeArray, array("name" => $storeName, "id" => $storeId));
+	}
+	
+	echo json_encode($storeArray);
+	
+}
+
 function getNIStores()
 {
 	$storesNI = array(
