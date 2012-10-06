@@ -110,5 +110,3 @@ function get_stock_quantity($response)
 	
 
 ?>
-</body>
-</html>
