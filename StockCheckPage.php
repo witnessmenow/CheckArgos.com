@@ -66,9 +66,12 @@ if ($productId == "")
 }
 else
 {
-	displayItemInfo($productId);
+	$productExist = displayItemInfo($productId);
 	
-	displayStockTableIreland($productId);
+	if ($productExist)
+	{
+		displayStockTableIreland($productId);
+	}
 }
 
 displayFooter();

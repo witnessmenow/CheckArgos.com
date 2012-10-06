@@ -12,7 +12,7 @@ function displayItemInfo($productId)
 		echo "No item found matching product ID\n";
 		echo "<br />";
 		
-		return;
+		return false;
 	}
 	
 	$infoFile = fopen($infoFileName,"a+");
@@ -35,6 +35,8 @@ function displayItemInfo($productId)
 			</table>';
 			
 	echo "<br /><br />";
+	
+	return true;
 	
 }
 

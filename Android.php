@@ -6,6 +6,7 @@
 
 require_once('Common/Common.php');
 require_once('StockCheckFunctions.php');
+require_once('StockCheckBackgroundFunctions.php');
 
 //Maybe im wrong, seems to be working without it, will leave this here incase it needs to be re-enabled
 //It would appear argos does not like people using their pictures! Faking a user agent seems to be the only way of getting it to show up
@@ -13,6 +14,7 @@ require_once('StockCheckFunctions.php');
 
 $functionCall = $_GET["function"];
 $productId = $_GET["productId"];
+$storeId = $_GET["storeId"];
 
 if ($functionCall == "info")
 {
@@ -39,6 +41,15 @@ else if ($functionCall == "getStores")
 {
 	loadIrishStores();
 }
+else if ($functionCall == "stock")
+{
+	$stockStatus = getStockStatusIreland($productId, $storeId);
+	
+	productStockJson(	$productId,
+						$storeId,
+						$stockStatus);
+
+}
 
 
 function productInfoJson(	$productId,
@@ -52,5 +63,16 @@ function productInfoJson(	$productId,
 							"imageUrl" => $productImage);
 							
 	echo json_encode($productInfo);
+}
+
+function productStockJson(	$productId,
+							$storeId,
+							$stockStatus)
+{
+	$productStock = array( 	"id" => $productId,
+							"storeId" => $storeId,
+							"stock" => $stockStatus);
+							
+	echo json_encode($productStock);
 }
 ?>
