@@ -26,6 +26,14 @@ function getNIStores()
 }
 */
 
+function writeToDataFile($fileName, $productId, $searchType)
+{
+	
+	$infoFile = fopen($fileName,"a+");
+	fputcsv ($infoFile , array($productId, time(), $searchType), ',');
+	fclose ($infoFile);
+}
+
 function validateProductId($productId)
 {
 	//first lets strip the "/" out

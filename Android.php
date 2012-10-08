@@ -32,6 +32,10 @@ if ($functionCall == "info")
 							$productName,
 							$productPrice,
 							$productImage);
+							
+			$fileName = "data.csv";
+			$searchType = "Android";
+			writeToDataFile($fileName, $productId, $searchType);
 		}
 	}
 
