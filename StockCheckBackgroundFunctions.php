@@ -59,8 +59,9 @@ function extractStockDetails ($query)
 				
 		if ($stockDetail)
 		{
-			$stockStatus = $stockStatus + ':  ' + get_stock_quantity($query);
+			$stockStatus = $stockStatus.':  ' . get_stock_quantity($query);
 		}
+
 
 		return $stockStatus;
 	}
