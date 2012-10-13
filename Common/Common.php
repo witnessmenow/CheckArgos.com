@@ -104,7 +104,7 @@ function loadIrishStores()
 	//echo $storePageHTML;
 	
 	//preg_match_all ('/class="storeTitle" id="STORE([0-9]{3,4})/', $storePageHTML, $idArray);
-	preg_match_all ('/<span>\s*([\D^]*)\s*([0-9]{3,4})\s*<\/span>/', $storePageHTML, $match);
+	preg_match_all ('/<span>\s*([\D^]*)\s*([0-9]{2,4})\s*<\/span>/', $storePageHTML, $match);
 	
 	$storeArray = array();
 	//print_r ($match);
