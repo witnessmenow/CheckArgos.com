@@ -7,6 +7,8 @@
 require_once('Common/Common.php');
 require_once('StockCheckFunctions.php');
 require_once('StockCheckBackgroundFunctions.php');
+require_once('TextSearchFunctions.php');
+
 
 //Maybe im wrong, seems to be working without it, will leave this here incase it needs to be re-enabled
 //It would appear argos does not like people using their pictures! Faking a user agent seems to be the only way of getting it to show up
@@ -53,6 +55,22 @@ else if ($functionCall == "stock")
 						$storeId,
 						$stockStatus);
 
+}
+else if ($functionCall == "search")
+{
+	$searchText = $_GET["searchText"];
+	$itemsPerSearch = $_GET["numItems"];
+	$offset = $_GET["offset"];
+	$sort = $_GET["sort"];
+	
+	if ($searchText != "")
+	{
+		searchProducts($searchText, $itemsPerSearch, $offset, $sort);
+	}
+	else
+	{
+		searchProducts("car", 40, 1, "Relevance");
+	}
 }
 
 
