@@ -19,6 +19,8 @@ function displayItemInfo($productId)
 	fputcsv ($infoFile , array($productId, time()), ',');
 	fclose ($infoFile);
 	
+	$productUrl = getProductUrl($productId);
+	
 	$productPageTitle = get_page_title($productPage);
 	$productTitle = getProductName($productPageTitle);
 	$productPrice = get_product_price($productPage);
