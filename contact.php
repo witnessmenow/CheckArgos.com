@@ -6,7 +6,7 @@ echo '
 			<table width="800" id="contact" >
 				<tr>Contact: <br />
 				<br />
-				Email me at brian[a]consoledoc.com or get in touch with me on boards.ie (user: witnessmenow).
+				Email me at bcg.ladinc[a]gmail.com , Tweet me @witnessmenow or get in touch with me on boards.ie (user: witnessmenow).
 				
 				</tr>';
 
