@@ -23,6 +23,25 @@ function searchProducts($searchString, $numberOfItems, $offSet, $sort)
 	displayProductsAsJson($products);
 }
 
+function advancedSearchProducts($searchString, $sectionSelected, $sectionNumber, $minPrice, $maxPrice, $numberOfItems, $offSet, $sort)
+{
+	$searchString = convertSearchString($searchString);
+	
+	$url = "http://www.argos.ie/webapp/wcs/stores/servlet/Search?pp=". $numberOfItems ."&s=". $sort ."&storeId=10152&langId=111&q=". $searchString;
+	if ($sectionSelected != "All+Sections")
+	{
+		$url = $url ."&c_1=1|category_root|".$sectionSelected."|".$sectionNumber;
+	}
+	$url = $url ."&r_001=2|Price|".$minPrice."+%3C%3D++%3C%3D+".$maxPrice."|2";
+	
+	$htmlCode = file_get_contents("$url");
+	
+	$products = getItemsArray($htmlCode);
+	
+	return $products;
+}
+
+
 function displayProductsAsJson($products)
 {
 	$productDetails = array();

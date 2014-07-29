@@ -135,6 +135,8 @@ function xmlhttpChange(pos, storeId, productId, rowCount)
 
 </script>
 
+<script src="js/sorttable.js"></script>
+
 </head>
 <body>
 
@@ -306,8 +308,9 @@ $sectionSelected = $_GET["section"];
 //$sectionSelected = validatePrice($sectionSelected);
 
 $infoFileName = "clearance.csv";
-
+require_once('ListOfProductsDisplayFunctions.php');
 include_once('header.php');
+
 
 echo '<font face="Arial" size="6">Clearance Checker:</font>';
 echo "<br />";
@@ -433,93 +436,12 @@ else
 		}while ($countProduct <=  $totalNumProducts);
 	}
 		
+	$storeId = $stores[$storeName];
 
-	echo 	'<table width="800" id="clearance" >
-				<tr>
-					<th>Product Name</th>
-					<th>Price</th>
-					<th>Save</th>
-					<th>Product ID</th>
-					<th>Stock</th>
-				</tr>';
-
-
-	foreach ($products as $singleProduct)
-	{
-		$productName = getName($singleProduct);
-		$productPrice = getCurrentPrice($singleProduct);
-		$productWasPrice = getWasPrice($singleProduct, $productPrice);
-		$productId = getId($singleProduct);
-		$valProductId = validateProductId($productId);
-		if ($productWasPrice)
-			$precentageSaving = number_format(((1-($productPrice/$productWasPrice))*100), 0);
-		else
-			$precentageSaving = 0;
-			
-		$productUrl = "http://www.argos.ie/static/Product/partNumber/".$valProductId.".htm";
-		$checkAllStoresUrl = "http://www.checkargos.com/index.php?productId=".$valProductId;
-
-
-		echo 	"<tr id=\"product".$valProductId."\">
-						<td><a title=\"Open product page on Argos.ie\" href=\"".$productUrl."\" target=\"_blank\">".$productName."</a></td>
-						<td title=\"Was: €".$productWasPrice."\">€".$productPrice."</td>
-						<td title=\"Was: €".$productWasPrice."\">".$precentageSaving."%</td>
-						<td><a title=\"Check stock in all Stores\" href=\"".$checkAllStoresUrl."\" target=\"_blank\">".$productId."</a></td>
-						<td id=\"td".$valProductId."\"><span id=\"span".$valProductId."\"></td>
-				</tr>";
-				
-		echo '<SCRIPT LANGUAGE="javascript">';
-		echo 'updateStock("'.$valProductId.'","'.$stores[$storeName].'");';
-		echo '</SCRIPT>';
-	}
-
-	echo 	"</table>";
+	drawListOfStockTable($products, $storeId);
 }
 	
 require_once("footer.php");	
-
-function getCurrentPrice ($productText)
-{
-	preg_match('/class=\"price footnote\"\>\s*\&euro;(.*)\\s*\<span/', $productText, $match);
-	if ($match[1] == "")
-		preg_match('/class=\"price \"\>\s*\&euro;(.*)\\s*\<\/li/', $productText, $match);
-	
-	return $match[1];
-}
-
-function getWasPrice ($productText, $currentPrice)
-{
-	preg_match('/class=\"wasprice\"\>Was\s\&euro;(.*)\\s*\<\/li/', $productText, $match);	
-	if ($match[1] != "")
-		return $match[1];
-	else
-		return 0;
-}
-
-function getId ($productText)
-{
-	preg_match('/class=\"partnum\"\>(.*)\<\/span\>/', $productText, $match);
-	return $match[1];
-}
-
-function getName ($productText)
-{
-	preg_match('/class=\"description\"\>\s*\<a.*>(.*)\<\/a\>/', $productText, $match);
-	return $match[1];
-}
-
-function validateProductId($productId)
-{
-	//first lets strip the "/" out
-	$productId = str_replace ('/', "", $productId);
-	
-	//lets strip spaces out
-	$productId = str_replace (' ', "", $productId);
-
-	//TODO Validate characters and length(7?).
-	
-	return $productId;
-}
 
 ?>
 </body>
