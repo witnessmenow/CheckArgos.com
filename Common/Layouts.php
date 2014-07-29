@@ -21,6 +21,9 @@ function displayFooter()
 						<a href="index.php">Home</a>
 					</td>
 					<td>
+						<a href="search.php">Search</a>
+					</td>
+					<td>
 						<a href="clearance.php">Clearance</a>
 					</td>
 					<td>
