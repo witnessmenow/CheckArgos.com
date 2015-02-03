@@ -92,7 +92,7 @@ function extractStockDetails ($query)
 		$stockStatus =  'Item is out of stock';
 		return $stockStatus;
 	}
-	$stockStatus = 'Unkown Status';
+	$stockStatus = 'Unknown Status';
 
 	return $stockStatus;
 }
