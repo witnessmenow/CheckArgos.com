@@ -9,7 +9,7 @@ require_once('Common/Common.php');
 function getStockStatusNI($productId, $storeId)
 {
 	$postCode = "BTA1AA";
-	$NiStockUrl = "http://www.argos.co.uk/webapp/wcs/stores/servlet/ISALTMStockAvailability?langId=-1&storeId=10001&checkStock=true&isStoreListPage=true&backTo=product&partNumber_1=".$productId."&postCode=".$postCode."&storeNo_1=".$storeId."&viewTaskName=ISALTMAjaxResponseView";
+	$NiStockUrl = "https://www.argos.co.uk/webapp/wcs/stores/servlet/ISALTMStockAvailability?langId=-1&storeId=10001&checkStock=true&isStoreListPage=true&backTo=product&partNumber_1=".$productId."&postCode=".$postCode."&storeNo_1=".$storeId."&viewTaskName=ISALTMAjaxResponseView";
 	
 	$response = file_get_contents("$irishStockUrl");
 	
@@ -22,16 +22,45 @@ function getStockStatusNI($productId, $storeId)
 	
 }
 
+function curl_get_contents($url)
+{
+    $ch = curl_init();
+    
+    //don't think most of these options make a difference
+    curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 20);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_URL, $url);
+    
+    //after trying many headers, host seemed to be required to make call work
+    $headers = [
+        'Host: argos.ie'
+    ];
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    $data = curl_exec($ch);
+    
+    $status = curl_getinfo($ch);
+    
+    curl_close($ch);
+
+    return $data;
+}
+
 function getStockStatusIreland($productId, $storeId)
 {
-	$irishStockUrl = "http://www.argos.ie/webapp/wcs/stores/servlet/ISALTMStockAvailability?storeId=10152&langId=111&partNumber_1=".$productId."&checkStock=true&backTo=product&storeSelection=".$storeId."&viewTaskName=ISALTMAjaxResponseView";
-	
-	$response = file_get_contents("$irishStockUrl");
+	$irishStockUrl = "https://www.argos.ie/webapp/wcs/stores/servlet/ISALTMStockAvailability?storeId=10152&langId=111&partNumber_1=".$productId."&checkStock=true&backTo=product&storeSelection=".$storeId."&viewTaskName=ISALTMAjaxResponseView";
+        
+        $response = curl_get_contents($irishStockUrl);
 	
 	$pos = strpos($response, "storePickup2");
+               
 	if ($pos !== false)
 	{
-		//Containts two store stock info
+            echo("response contains storepickup2 for $productId and $storeId");
+		//Contains two store stock info
 		$splitQuery = explode('<td class=\"storePickup2\">', $response);
 		$stockStatus = extractStockDetails ($splitQuery[0]);
 	}
@@ -41,7 +70,7 @@ function getStockStatusIreland($productId, $storeId)
 	}
 	
 	return $stockStatus;
-	
+
 }
 			
 function extractStockDetails ($query)
@@ -92,7 +121,8 @@ function extractStockDetails ($query)
 		$stockStatus =  'Item is out of stock';
 		return $stockStatus;
 	}
-	$stockStatus = 'Unkown Status';
+//	$stockStatus = 'Unknown Status';
+        $stockStatus = $pos;
 
 	return $stockStatus;
 }
